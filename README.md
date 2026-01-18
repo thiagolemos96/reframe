@@ -5,6 +5,7 @@
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![PWA](https://img.shields.io/badge/PWA-Offline-success?style=for-the-badge)
+[![Deploy](https://img.shields.io/badge/Acessar_Site-Live_Demo-success?style=for-the-badge&logo=safari&logoColor=white)](https://thiagolemos96.github.io/reframe/)
 
 ## 📖 About the Project
 
@@ -47,7 +48,7 @@ To run this project locally on your machine:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR-USERNAME/reframe.git](https://github.com/YOUR-USERNAME/reframe.git)
+    git clone [https://github.com/thiagolemos96/reframe.git](https://github.com/thiagolemos96/reframe.git)
     cd reframe
     ```
 
@@ -67,7 +68,7 @@ To run this project locally on your machine:
 
 ## 📲 How to use on iPad
 
-1.  Access the hosted project link (e.g., GitHub Pages) via Safari on your iPad.
+1.  Access the hosted project [link](https://thiagolemos96.github.io/reframe/) via Safari on your iPad.
 2.  Wait for the initial loading (Loading Screen).
 3.  Tap the **Share** button (square with an arrow pointing up).
 4.  Select **"Add to Home Screen"**.
@@ -78,7 +79,7 @@ To run this project locally on your machine:
 
 ## 🤖 How to use on Android
 
-1.  Access the hosted project link via **Google Chrome**.
+1.  Access the hosted project [link](https://thiagolemos96.github.io/reframe/) via **Google Chrome**.
 2.  Wait for the initial loading.
 3.  Tap the **Three Dots Menu** (⋮) in the top right corner.
 4.  Select **"Install App"** or **"Add to Home Screen"**.
