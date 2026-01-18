@@ -5,7 +5,7 @@
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![PWA](https://img.shields.io/badge/PWA-Offline-success?style=for-the-badge)
-[![Deploy](https://img.shields.io/badge/Acessar_Site-Live_Demo-success?style=for-the-badge&logo=safari&logoColor=white)](https://thiagolemos96.github.io/reframe/)
+[![Deploy](https://img.shields.io/badge/Access_Website-Live_Demo-success?style=for-the-badge&logo=safari&logoColor=white)](https://thiagolemos96.github.io/reframe/)
 
 ## 📖 About the Project
 
