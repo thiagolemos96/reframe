@@ -30,7 +30,7 @@ export const AppProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem('reFrameConfig');
       return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : DEFAULT_CONFIG;
-    } catch (e) { return DEFAULT_CONFIG; }
+    } catch { return DEFAULT_CONFIG; }
   });
 
   const [images, setImages] = useState([]);
@@ -113,4 +113,5 @@ export const AppProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAppContext = () => useContext(AppContext);

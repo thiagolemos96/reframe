@@ -18,7 +18,7 @@ const Slideshow = () => {
   if (!images || images.length === 0) return null;
 
   const safeIndex = index >= images.length ? 0 : index;
-  const currentSrc = images[safeIndex];
+  const currentSrc = images[safeIndex].url;
 
   const getObjectFit = () => {
     if (config.fitMode === 'contain') return 'contain';
@@ -28,6 +28,7 @@ const Slideshow = () => {
 
   let animClass = "slide-img";
   if (config.effect === 'zoom') animClass += " effect-zoom";
+  if (config.effect === 'fade') animClass += " effect-fade";
 
   return (
     <div className="slideshow-container">

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export const useWeather = (shouldFetch) => {
   const [weather, setWeather] = useState({ temp: '--', city: 'Loading...' });
-  const [coords, setCoords] = useState({ lat: -23.5505, lon: -46.6333 });
+  const coordsRef = useRef({ lat: -23.5505, lon: -46.6333 });
 
   const fetchWeather = async (lat, lon) => {
     try {
@@ -29,16 +29,19 @@ export const useWeather = (shouldFetch) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          setCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude });
-          fetchWeather(pos.coords.latitude, pos.coords.longitude);
+          coordsRef.current = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+          fetchWeather(coordsRef.current.lat, coordsRef.current.lon);
         },
-        () => fetchWeather(coords.lat, coords.lon)
+        () => fetchWeather(coordsRef.current.lat, coordsRef.current.lon)
       );
     } else {
-      fetchWeather(coords.lat, coords.lon);
+      fetchWeather(coordsRef.current.lat, coordsRef.current.lon);
     }
 
-    const timer = setInterval(() => fetchWeather(coords.lat, coords.lon), 3600000);
+    const timer = setInterval(
+      () => fetchWeather(coordsRef.current.lat, coordsRef.current.lon),
+      3600000
+    );
     return () => clearInterval(timer);
   }, [shouldFetch]);
 

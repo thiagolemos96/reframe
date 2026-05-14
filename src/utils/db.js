@@ -18,7 +18,7 @@ const openDB = () => {
   });
 };
 
-const fileToBase64 = (file) => {
+export const fileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -27,28 +27,24 @@ const fileToBase64 = (file) => {
   });
 };
 
-
 export const saveImagesToDB = async (files) => {
-  try {
-    const promises = Array.from(files).map(file => fileToBase64(file));
-    const base64List = await Promise.all(promises);
+  const base64List = await Promise.all(Array.from(files).map(file => fileToBase64(file)));
 
-    const db = await openDB();
+  const db = await openDB();
+
+  return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
 
+    const ids = [];
     base64List.forEach(base64 => {
-      store.add({ data: base64, date: new Date() });
+      const req = store.add({ data: base64, date: new Date() });
+      req.onsuccess = () => ids.push(req.result);
     });
 
-    return new Promise((resolve, reject) => {
-      tx.oncomplete = () => resolve();
-      tx.onerror = (e) => reject(e.target.error);
-    });
-  } catch (error) {
-    console.error("Erro ao salvar:", error);
-    throw error;
-  }
+    tx.oncomplete = () => resolve(ids);
+    tx.onerror = (e) => reject(e.target.error);
+  });
 };
 
 export const loadImagesFromDB = async () => {
@@ -59,45 +55,29 @@ export const loadImagesFromDB = async () => {
     const request = store.getAll();
 
     request.onsuccess = () => {
-      const images = request.result.map(item => item.data);
-      resolve(images);
+      resolve(request.result.map(item => ({ id: item.id, data: item.data })));
     };
     request.onerror = () => reject('Erro ao ler DB');
   });
 };
 
-export const deleteImageFromDB = async (imageData) => {
+export const deleteImageFromDB = async (id) => {
   const db = await openDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
-  const store = tx.objectStore(STORE_NAME);
-  const request = store.openCursor();
-
-  request.onsuccess = (event) => {
-    const cursor = event.target.result;
-    if (cursor) {
-      if (cursor.value.data === imageData) cursor.delete();
-      else cursor.continue();
-    }
-  };
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = (e) => reject(e.target.error);
+  });
 };
 
 export const clearDB = async () => {
   return new Promise((resolve, reject) => {
     const req = indexedDB.deleteDatabase(DB_NAME);
 
-    req.onsuccess = () => {
-      console.log("Database successfully deleted");
-      resolve();
-    };
-
-    req.onerror = (event) => {
-      console.error("Error deleting database:", event);
-      reject();
-    };
-
-    req.onblocked = () => {
-      console.warn("Deletion blocked (another tab open?)");
-      resolve();
-    };
+    req.onsuccess = () => resolve();
+    req.onerror = (event) => reject(event);
+    req.onblocked = () => resolve();
   });
 };
