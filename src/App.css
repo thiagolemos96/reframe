@@ -53,6 +53,18 @@ body, #root {
   display: block;
 }
 
+.slideshow-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .effect-zoom { animation: zoomEffect 20s linear infinite; }
 .effect-fade { animation: fadeIn 1s ease-in-out; }
 
