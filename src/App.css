@@ -311,7 +311,7 @@ body, #root {
   letter-spacing: 1px;
 }
 
-select, input[type="number"] {
+input[type="number"] {
   width: 100%;
   padding: 8px 10px;
   background: var(--bg-input);
@@ -323,8 +323,69 @@ select, input[type="number"] {
   -webkit-appearance: none;
 }
 
-select:focus, input[type="number"]:focus {
+input[type="number"]:focus {
   border-color: var(--accent-border);
+}
+
+/* ===== CUSTOM SELECT ===== */
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-trigger {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: border-color 0.15s;
+}
+
+.custom-select-trigger:hover {
+  border-color: var(--accent-border);
+}
+
+.custom-select-trigger svg {
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.custom-select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: rgba(14, 14, 22, 0.99);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.custom-select-option {
+  padding: 9px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.1s;
+}
+
+.custom-select-option:hover {
+  background: var(--accent-bg);
+}
+
+.custom-select-option.selected {
+  color: var(--accent);
 }
 
 /* ===== GALLERY THUMBNAILS ===== */

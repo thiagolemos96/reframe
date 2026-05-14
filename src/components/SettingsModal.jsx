@@ -1,5 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
+import CustomSelect from './CustomSelect';
+
+const EFFECT_OPTIONS = [
+  { value: 'fade', label: 'Fade' },
+  { value: 'zoom', label: 'Slow Zoom' },
+  { value: 'none', label: 'None' },
+];
+const FIT_OPTIONS = [
+  { value: 'cover', label: 'Fill Screen' },
+  { value: 'contain', label: 'Show Full Photo' },
+];
+const CLOCK_OPTIONS = [
+  { value: 'yes', label: 'Yes' },
+  { value: 'no', label: 'No' },
+];
 
 const PRESET_COLORS = ['#6366f1', '#0a84ff', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
 
@@ -64,11 +79,7 @@ const SettingsModal = ({ onClose }) => {
             <div className="sheet-row-2">
               <div className="field-group">
                 <label className="field-label">Effect</label>
-                <select value={config.effect} onChange={(e) => handleChange('effect', e.target.value)}>
-                  <option value="fade">Fade</option>
-                  <option value="zoom">Slow Zoom</option>
-                  <option value="none">None</option>
-                </select>
+                <CustomSelect value={config.effect} onChange={(v) => handleChange('effect', v)} options={EFFECT_OPTIONS} />
               </div>
               <div className="field-group">
                 <label className="field-label">Interval</label>
@@ -78,18 +89,12 @@ const SettingsModal = ({ onClose }) => {
 
             <div className="field-group">
               <label className="field-label">Photo Mode</label>
-              <select value={config.fitMode} onChange={(e) => handleChange('fitMode', e.target.value)}>
-                <option value="cover">Fill Screen</option>
-                <option value="contain">Show Full Photo</option>
-              </select>
+              <CustomSelect value={config.fitMode} onChange={(v) => handleChange('fitMode', v)} options={FIT_OPTIONS} />
             </div>
 
             <div className="field-group">
               <label className="field-label">Show Clock</label>
-              <select value={config.showInfo} onChange={(e) => handleChange('showInfo', e.target.value)}>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+              <CustomSelect value={config.showInfo} onChange={(v) => handleChange('showInfo', v)} options={CLOCK_OPTIONS} />
             </div>
 
             <div className="field-group">
