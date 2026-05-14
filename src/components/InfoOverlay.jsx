@@ -9,41 +9,14 @@ const InfoOverlay = () => {
 
   if (config.showInfo === 'no') return null;
 
-  const getBackgroundStyle = () => {
-    switch (config.infoBg) {
-      case 'dark':
-        return {
-          background: 'rgba(0, 0, 0, 0.65)',
-          backdropFilter: 'none',
-          border: '1px solid rgba(255,255,255,0.1)'
-        };
-      default:
-        return {};
-    }
-  };
-
-  const getShadowStyle = () => {
-    switch (config.infoShadow) {
-      case 'strong': return '0 0 4px #000, 0 0 8px #000';
-      case 'none': return 'none';
-      default: return '0 2px 10px rgba(0,0,0,0.5)';
-    }
-  };
-
-  const dynamicStyle = {
-    color: config.infoColor,
-    textShadow: getShadowStyle(),
-    borderRadius: '24px',
-    padding: config.infoBg === 'none' ? '0' : '20px 30px',
-
-    ...getBackgroundStyle()
-  };
-
   return (
-    <div className="info-container" style={dynamicStyle}>
+    <div className="info-container">
       <div id="clock">{timeData.clock}</div>
-      <div id="date">{timeData.date}</div>
-      <div id="weather">{weatherData.temp}°C - {weatherData.city}</div>
+      <div className="info-meta">
+        <span className="info-date">{timeData.date}</span>
+        <span className="info-sep">·</span>
+        <span className="info-weather">{weatherData.temp}°C · {weatherData.city}</span>
+      </div>
     </div>
   );
 };

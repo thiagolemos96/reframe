@@ -5,26 +5,22 @@ const StartScreen = () => {
   const { addPhotos } = useAppContext();
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (e) => {
-    addPhotos(e.target.files);
-  };
-
   return (
     <div className="start-screen">
       <div className="welcome-box">
+        <div className="welcome-icon">🖼</div>
         <h1>ReFrame</h1>
-
-        <button className="btn btn-blue" onClick={() => fileInputRef.current.click()}>
+        <p className="welcome-subtitle">Turn your screen into<br />a personal photo frame</p>
+        <button className="btn btn-accent-full" onClick={() => fileInputRef.current.click()}>
           Select Photos
         </button>
-
         <input
           type="file"
           multiple
           accept="image/*"
           ref={fileInputRef}
           style={{ display: 'none' }}
-          onChange={handleFileChange}
+          onChange={(e) => addPhotos(e.target.files)}
         />
       </div>
     </div>
