@@ -1,6 +1,20 @@
-/* =========================================
-   RESET E BASE
-========================================= */
+/* ===== TOKENS ===== */
+:root {
+  --accent: #6366f1;
+  --accent-dark: rgb(74, 76, 191);
+  --accent-light: rgba(99, 102, 241, 0.85);
+  --accent-bg: rgba(99, 102, 241, 0.15);
+  --accent-border: rgba(99, 102, 241, 0.35);
+  --bg-base: #08080f;
+  --bg-surface: rgba(255, 255, 255, 0.04);
+  --bg-input: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.45);
+  --text-muted: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== RESET & BASE ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,14 +22,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-body,
-#root {
+body, #root {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #000;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, Helvetica, Arial, sans-serif;
 }
 
 .app-container {
@@ -24,13 +37,10 @@ body,
   height: 100%;
 }
 
-/* =========================================
-   SLIDESHOW 
-========================================= */
+/* ===== SLIDESHOW ===== */
 .slideshow-container {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 0;
@@ -41,275 +51,301 @@ body,
   width: 100%;
   height: 100%;
   display: block;
-  opacity: 1;
-  transition: opacity 1s ease-in-out;
 }
 
-.effect-zoom {
-  animation: zoomEffect 20s linear infinite;
-}
+.effect-zoom { animation: zoomEffect 20s linear infinite; }
+.effect-fade { animation: fadeIn 1s ease-in-out; }
 
 @keyframes zoomEffect {
-  0% {
-    transform: scale(1);
-  }
-
-  100% {
-    transform: scale(1.15);
-  }
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
 }
 
-/* =========================================
-   UI FLUTUANTE (Info e Botão)
-========================================= */
-
-/* Widget de Informações */
-.info-container {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  z-index: 10;
-  text-align: right;
-  pointer-events: none;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-#clock {
-  font-size: 5rem;
-  font-weight: 200;
-  line-height: 1;
-  letter-spacing: -2px;
-}
-
-#date {
-  font-size: 1.3rem;
-  opacity: 0.9;
-  margin-top: 5px;
-  text-transform: capitalize;
-  font-weight: 400;
-}
-
-#weather {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-/* Botão de Configurações */
+/* ===== SETTINGS BUTTON ===== */
 .settings-btn {
   position: fixed;
-  top: 25px;
-  right: 25px;
+  top: 16px;
+  right: 16px;
   z-index: 999;
-  width: 65px;
-  height: 65px;
-  background: rgba(0, 0, 0, 0.5);
+  width: 42px;
+  height: 42px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 50%;
-  font-size: 2.5rem;
+  font-size: 1.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.2s;
 }
 
 .settings-btn:active {
-  transform: scale(0.95);
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* =========================================
-   TELAS MODAIS (Start e Settings)
-========================================= */
+/* ===== INFO OVERLAY ===== */
+.info-container {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  z-index: 10;
+  pointer-events: none;
+}
 
-/* Container de Fundo Escuro */
-.settings-modal,
+#clock {
+  font-size: 4rem;
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -3px;
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.7);
+}
+
+.info-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.info-date {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+
+.info-sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.info-weather {
+  color: var(--accent-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* ===== START SCREEN ===== */
 .start-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 20px;
 }
 
-/* A Caixa Central */
-.settings-box,
 .welcome-box {
-  background: #1c1c1e;
-  width: 90%;
-  max-width: 700px;
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  max-height: 85vh;
+  align-items: center;
 }
 
-/* Tela Inicial */
-.welcome-box {
-  padding: 40px;
-  text-align: center;
+.welcome-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px var(--accent-bg);
 }
 
 .welcome-box h1 {
-  font-size: 2.2rem;
+  font-size: 1.7rem;
   font-weight: 300;
-  margin-bottom: 10px;
+  color: var(--text-primary);
   letter-spacing: -0.5px;
+  margin-bottom: 6px;
 }
 
-.welcome-box p {
-  color: #8ea;
-  margin-bottom: 30px;
-  font-size: 1.1rem;
-  opacity: 0.7;
+.welcome-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
 }
 
-/* Menu Settings */
-.settings-box h2 {
-  text-align: center;
-  padding: 20px;
-  margin: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-weight: 600;
-  font-size: 1.2rem;
-  border-radius: 20px;
-}
-
-.scroll-content {
-  padding: 25px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* =========================================
-   ELEMENTOS INTERNOS
-========================================= */
-
+/* ===== BUTTONS ===== */
 .btn {
-  width: 100%;
-  padding: 16px;
+  padding: 14px;
   border-radius: 14px;
   border: none;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
+  transition: opacity 0.2s;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+}
+
+.btn:active { opacity: 0.7; }
+
+.btn-accent {
+  flex: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 4px 20px var(--accent-bg);
+}
+
+.btn-accent-full {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 4px 20px var(--accent-bg);
+}
+
+.btn-danger {
+  background: rgba(255, 69, 58, 0.08);
+  color: #ff453a;
+  border: 1px solid rgba(255, 69, 58, 0.2);
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: opacity 0.2s;
 }
 
-.btn:active {
-  opacity: 0.7;
+.btn-danger:active { opacity: 0.7; }
+
+/* ===== BOTTOM SHEET ===== */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
 }
 
-.btn-blue {
-  background: #0a84ff;
-  color: white;
-  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+.settings-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(8, 8, 16, 0.97);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.btn-green {
-  background: #30d158;
-  color: white;
-  box-shadow: 0 4px 12px rgba(48, 209, 88, 0.3);
-  margin-top: 25px;
+.settings-sheet.open {
+  transform: translateY(0);
 }
 
-.btn-orange {
-  background: rgba(255, 159, 10, 0.15);
-  color: #ff9f0a;
-  margin-bottom: 20px;
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin: 10px auto 0;
 }
 
-.setting-group>div {
-  margin-bottom: 20px;
+.sheet-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 16px 20px;
 }
 
-.setting-group {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  align-items: flex-start;
-}
-
-.setting-column {
-  flex: 1;
+.sheet-col {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 0.8rem;
-  color: #888;
+.sheet-label {
+  color: var(--text-muted);
+  font-size: 0.58rem;
   text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
 }
 
-select,
-input {
+.sheet-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sheet-footer {
+  padding: 4px 20px 28px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== FORM FIELDS ===== */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-label {
+  color: var(--text-muted);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+select, input[type="number"] {
   width: 100%;
-  padding: 14px;
-  background: #2c2c2e;
-  color: white;
-  border: 1px solid #3a3a3c;
-  border-radius: 12px;
-  font-size: 1rem;
+  padding: 8px 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.78rem;
   outline: none;
   -webkit-appearance: none;
 }
 
-select:focus,
-input:focus {
-  border-color: #0a84ff;
-  background: #3a3a3c;
+select:focus, input[type="number"]:focus {
+  border-color: var(--accent-border);
 }
 
-.thumbnails-title {
-  text-align: center;
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-}
-
+/* ===== GALLERY THUMBNAILS ===== */
 .thumb-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 15px;
+  gap: 6px;
 }
 
 .thumb-item {
-  width: 65px;
-  height: 65px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   overflow: hidden;
-  position: relative;
-  border: 2px solid transparent;
   cursor: pointer;
+  border: 1px solid var(--border);
   flex-shrink: 0;
+  transition: opacity 0.2s;
 }
+
+.thumb-item:hover { opacity: 0.7; }
 
 .thumb-item img {
   width: 100%;
@@ -317,88 +353,104 @@ input:focus {
   object-fit: cover;
 }
 
-.thumb-item:hover {
-  border-color: #ff453a;
-  opacity: 0.8;
+.thumb-add {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--accent-bg);
+  border: 1px dashed var(--accent-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--accent-light);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
 }
 
-/* Botão reset cache */
-.btn-red {
-  background: rgba(255, 69, 58, 0.15);
-  color: #ff453a;
-  border: 1px solid #ff453a;
-  margin-top: 30px;
+.thumb-add:active { opacity: 0.7; }
+
+/* ===== COLOR SWATCHES ===== */
+.color-swatches {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.btn-red:active {
-  background: #ff453a;
-  color: white;
+.color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: transform 0.15s;
 }
 
-/* TELA DE CARREGAMENTO */
+.color-swatch:active { transform: scale(0.9); }
+
+.color-swatch.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.color-swatch-custom {
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== LOADING SCREEN ===== */
 .loading-screen {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
+  inset: 0;
+  background: var(--bg-base);
   z-index: 9999;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .loading-screen p {
   margin-top: 20px;
   font-weight: 300;
-  opacity: 0.7;
-  font-size: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
   letter-spacing: 0.5px;
 }
 
-/* SPINNER */
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-left-color: #0a84ff;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.9s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-/* RESPONSIVIDADE */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   #clock {
-    font-size: 4rem;
-  }
-
-  .settings-btn {
-    width: 55px;
-    height: 55px;
-    font-size: 2rem;
+    font-size: 3rem;
+    letter-spacing: -2px;
   }
 
   .info-container {
     bottom: 20px;
-    right: 20px;
+    left: 16px;
   }
 
-  .setting-group {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .setting-column {
-    width: 100%;
-    margin-bottom: 20px;
+  .sheet-content {
+    grid-template-columns: 1fr;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
