@@ -1,16 +1,28 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { saveImagesToDB, loadImagesFromDB, deleteImageFromDB, clearDB } from '../utils/db';
+import { saveImagesToDB, loadImagesFromDB, deleteImageFromDB, clearDB, fileToBase64 } from '../utils/db';
 
 const AppContext = createContext();
+
+const applyAccent = (hex) => {
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const d = (c) => Math.round(c * 0.78);
+  const root = document.documentElement;
+  root.style.setProperty('--accent', hex);
+  root.style.setProperty('--accent-dark', `rgb(${d(r)},${d(g)},${d(b)})`);
+  root.style.setProperty('--accent-light', `rgba(${r},${g},${b},0.85)`);
+  root.style.setProperty('--accent-bg', `rgba(${r},${g},${b},0.15)`);
+  root.style.setProperty('--accent-border', `rgba(${r},${g},${b},0.35)`);
+};
 
 const DEFAULT_CONFIG = {
   time: 10,
   effect: 'zoom',
   showInfo: 'yes',
   fitMode: 'cover',
-  infoColor: '#ffffff',
-  infoBg: 'glass',
-  infoShadow: 'normal'
+  accentColor: '#6366f1'
 };
 
 export const AppProvider = ({ children }) => {
@@ -30,7 +42,7 @@ export const AppProvider = ({ children }) => {
       try {
         const cachedImages = await loadImagesFromDB();
         if (cachedImages && cachedImages.length > 0) {
-          setImages(cachedImages);
+          setImages(cachedImages.map(item => ({ url: item.data, dbId: item.id })));
           setIsStarted(true);
         }
       } catch (error) {
@@ -44,20 +56,33 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('reFrameConfig', JSON.stringify(config));
+    applyAccent(config.accentColor);
   }, [config]);
 
-  const addPhotos = (fileList) => {
-    if (fileList && fileList.length > 0) {
-      const filesArray = Array.from(fileList);
-      const newLocalUrls = filesArray.map(file => URL.createObjectURL(file));
+  const addPhotos = async (fileList) => {
+    if (!fileList || fileList.length === 0) return;
 
-      setImages(prev => [...prev, ...newLocalUrls]);
-      setIsStarted(true);
+    const filesArray = Array.from(fileList);
+    const base64List = await Promise.all(filesArray.map(file => fileToBase64(file)));
+    const newItems = base64List.map(url => ({ url, dbId: null }));
 
-      saveImagesToDB(fileList)
-        .then(() => console.log("Salvo."))
-        .catch(err => console.error(err));
-    }
+    setImages(prev => [...prev, ...newItems]);
+    setIsStarted(true);
+
+    saveImagesToDB(fileList)
+      .then(ids => {
+        setImages(prev => {
+          const updated = [...prev];
+          const startIndex = updated.length - ids.length;
+          ids.forEach((id, i) => {
+            if (updated[startIndex + i]) {
+              updated[startIndex + i] = { url: updated[startIndex + i].url, dbId: id };
+            }
+          });
+          return updated;
+        });
+      })
+      .catch(err => console.error(err));
   };
 
   const removePhoto = (index) => {
@@ -67,8 +92,8 @@ export const AppProvider = ({ children }) => {
 
     if (newImageList.length === 0) setIsStarted(false);
 
-    if (typeof imageToRemove === 'string' && imageToRemove.startsWith('data:')) {
-      deleteImageFromDB(imageToRemove);
+    if (imageToRemove.dbId !== null) {
+      deleteImageFromDB(imageToRemove.dbId);
     }
   };
 
