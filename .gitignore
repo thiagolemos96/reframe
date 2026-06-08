@@ -14,7 +14,7 @@ dist-ssr
 
 .claude
 .superpowers
-docs
+docs/#
 
 
 # Editor directories and files
