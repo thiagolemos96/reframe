@@ -111,3 +111,9 @@ To run this project locally on your machine:
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 Made with 💙 to revive old gadgets.
+
+
+## 📝 TODO
+
+* Edit Clock modal style (eg change position, change shape)
+* Change photo by clicking in the sides 
